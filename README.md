@@ -1,5 +1,5 @@
 # Introduction
-This is a bash script to automate running Open WebUI on Linux systems with Cloudflare. The script currently works on Debian 12 with an AMD Radeon 7900XTX -- YMMV with other setups.
+This is a bash script to automate running Open WebUI on Linux systems with Cloudflare via Docker. The script currently works on Debian 12 with an AMD Radeon 7900XTX -- YMMV with other setups.
 
 # Setup
 1. Clone the repo
