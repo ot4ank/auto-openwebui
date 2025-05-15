@@ -1,0 +1,2 @@
+CLOUDFLARED_KEY=xxxxxxxxxxxxxxxxxxxxxx
+LOCAL_IP=http://xxx.xxx.x.xxx:3000 # 3000 is the default port for Ollama, change if needed
