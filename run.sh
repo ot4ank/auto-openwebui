@@ -11,15 +11,15 @@ sleep 2 # Waits 2 seconds
 docker network create docker_bridge
 sleep 2  # Waits 2 seconds.
 
-# Step 2: Run the Ollama Container
+# Step 2: Run the Ollama Container. Note, NVIDIA GPUs may need settings changed here.
 docker run -d \
   --network docker_bridge \
   -e OLLAMA_BASE_URL=http://host.docker.internal \
   --restart always \
-  --device /dev/kfd --device /dev/dri \ # replace with --gpus=all if you have an NVIDIA GPU.
+  --device /dev/kfd --device /dev/dri \
   -v ollama:/root/.ollama \
   -p 11434:11434 \
-  --name ollama ollama/ollama:rocm # replace with --name ollama ollama/ollama:main if you have an NVIDIA GPU. NB ROCm only works for compatible AMD Radeon GPUs.
+  --name ollama ollama/ollama:rocm
 
 # Step 3: Run the WebUI container
 docker run -d \
@@ -34,7 +34,7 @@ sleep 2  # Waits 2 seconds.
 docker run -d \
     --network docker_bridge \
     --name cloudflared \
-    cloudflare/cloudflared:latest tunnel --no-autoupdate run --token CLOUDFLARED_KEY --url=LOCAL_IP
+    cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $CLOUDFLARED_KEY --url=$LOCAL_IP
 sleep 2  # Waits 2 seconds.
 
 # Step 5: Add Watchtower for automatic updates
